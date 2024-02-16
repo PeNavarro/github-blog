@@ -1,28 +1,16 @@
-import { useEffect, useState } from "react";
 import { SearchBarContainer } from "./styles";
 import { useForm } from "react-hook-form";
 
-export function SearchBar(){
+interface SearchBarProps{
+    setSearchTerm: (props: string) => void
+}
+
+export function SearchBar({setSearchTerm}: SearchBarProps){
     const { register } = useForm()
-    const [searchTerm, setSearchTerm] = useState()
-
-    console.log(searchTerm)
-
-    async function getIssues(){
-        const response = await fetch('https://api.github.com/search/issues?q=Boas%20práticas%20repo:rocketseat-education/reactjs-github-blog-challenge')
-        .then(response => {
-            return response.json()
-        })
-        .catch(error => {
-            console.log(error)
-        })
-
-        console.log(response)
+    
+    function handleSearchTerm(inputSearchTerm: string){
+        setSearchTerm(inputSearchTerm)
     }
-
-    useEffect(() => {
-        // getIssues();
-    }, [searchTerm])
 
     return(
         <SearchBarContainer>
@@ -37,7 +25,7 @@ export function SearchBar(){
                     id="search" 
                     placeholder="Buscar conteúdo"
                     {...register('search', {
-                        onChange: (e) => setSearchTerm(e.target.value)
+                        onChange: (e) => handleSearchTerm(e.target.value)
                     })}
                 />
             </form>
